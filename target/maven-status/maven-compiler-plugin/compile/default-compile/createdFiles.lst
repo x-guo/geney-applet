@@ -1,0 +1,4 @@
+com\geney\entity\User.class
+com\geney\service\UserService.class
+com\geney\dal\UserDO.class
+com\geney\service\impl\UserServiceImpl.class
