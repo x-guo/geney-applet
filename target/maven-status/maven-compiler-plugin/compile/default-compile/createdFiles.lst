@@ -1,4 +1,8 @@
-com\geney\entity\User.class
+com\geney\dal\mapper\UserMapper.class
 com\geney\service\UserService.class
-com\geney\dal\UserDO.class
+com\geney\common\ShiroPrincipal.class
+com\geney\controller\UserController.class
 com\geney\service\impl\UserServiceImpl.class
+com\geney\dal\entity\UserDO.class
+com\geney\controller\MyRealm.class
+com\geney\service\UserManager.class

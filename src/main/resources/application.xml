@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:aop="http://www.springframework.org/schema/aop"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-3.0.xsd
+http://www.springframework.org/schema/tx
+http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 http://www.springframework.org/schema/aop
 http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-	
+">
+
+	<context:component-scan base-package="com.geney"/>
 	<bean id="propertyConfiger" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true"/>
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
 		<property name="locations">
 			<list>
 				<value>classpath:properties/*.properties</value>
@@ -17,6 +26,7 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 			</list>
 		</property>
 	</bean>
+
 	<!-- 配置数据源可以使用属性文件读取也可以手动配置  该配置为读取属性文件-->
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${jdbc.driverClassName}"/>
@@ -24,16 +34,50 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 		<property name="username" value="${jdbc.username}"/>
 		<property name="password" value="${jdbc.password}"/>
 	</bean>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!--配置通知-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="start*" propagation="REQUIRED"/>
+			<tx:method name="execute*" propagation="REQUIRED"/>
+			<tx:method name="save*" propagation="REQUIRED"/>
+			<tx:method name="delete*" propagation="REQUIRED"/>
+			<tx:method name="update*" propagation="REQUIRED"/>
+			<tx:method name="remove*" propagation="REQUIRED"/>
+			<tx:method name="assign*" propagation="REQUIRED"/>
+			<tx:method name="create*" propagation="REQUIRED"/>
+			<tx:method name="complete*" propagation="REQUIRED"/>
+			<tx:method name="finish*" propagation="REQUIRED"/>
+			<tx:method name="terminate*" propagation="REQUIRED"/>
+			<tx:method name="take*" propagation="REQUIRED"/>
+			<tx:method name="deploy*" propagation="REQUIRED"/>
+			<tx:method name="undeploy*" propagation="REQUIRED"/>
+			<tx:method name="redeploy*" propagation="REQUIRED"/>
+
+			<tx:method name="get*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="query*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="search*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="is*" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="*" propagation="REQUIRED"/>
+		</tx:attributes>
+	</tx:advice>
+
+
 	<!-- 自动扫描mapper接口文件 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.geney.dal" />
+		<property name="basePackage" value="com.geney.dal.mapper"/>
 	</bean>
-	
+
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
+		<property name="typeAliasesPackage" value="com.geney.dal.entity"/>
 		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
 		<!-- 后期可将数据源放入到mapper-config文件中 如果配置多个数据源只需在制定的文件下面添加mapper-config就可以 -->
-		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+		<property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
 	</bean>
-	<context:component-scan base-package="com.geney.service"/>
+	<aop:aspectj-autoproxy/>
 </beans>

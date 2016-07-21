@@ -1,4 +1,8 @@
-F:\testspaces\maven_product\src\main\java\com\geney\service\UserService.java
-F:\testspaces\maven_product\src\main\java\com\geney\entity\User.java
-F:\testspaces\maven_product\src\main\java\com\geney\service\impl\UserServiceImpl.java
-F:\testspaces\maven_product\src\main\java\com\geney\dal\UserDO.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\common\ShiroPrincipal.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\controller\MyRealm.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\dal\entity\UserDO.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\dal\mapper\UserMapper.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\service\UserManager.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\service\UserService.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\service\impl\UserServiceImpl.java
+F:\IDEAPRO\maven_product\src\main\java\com\geney\controller\UserController.java
